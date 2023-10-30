@@ -24,6 +24,8 @@ namespace Infrastructure.Persistence.Contexts
             _authenticatedUser = authenticatedUser;
         }
         public DbSet<Product> Products { get; set; }
+        public DbSet<SaleMaster> SaleMasters { get; set; }
+        public DbSet<SaleDetail> SaleDetails { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
