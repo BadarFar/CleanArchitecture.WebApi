@@ -1,4 +1,5 @@
 ﻿using Application.Exceptions;
+using Application.Features.Basic;
 using Application.Interfaces;
 using Application.Wrappers;
 using Domain.Settings;
@@ -40,6 +41,8 @@ namespace Infrastructure.Identity
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
             #region Services
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IMath, MathOperations>();
+            services.AddTransient<IFibonacci, Fibonacci>();
             #endregion
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
             services.AddAuthentication(options =>
