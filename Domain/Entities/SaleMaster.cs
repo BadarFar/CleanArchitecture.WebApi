@@ -7,10 +7,14 @@ namespace Domain.Entities
 {
     public class SaleMaster : AuditableBaseEntity
     {
+        public SaleMaster()
+        {
+            SaleDetails = new List<SaleDetail>();
+        }
         public string CustomerName { get; set; }
         public string OrderStatus { get; set; }
         public decimal GST { get; set; }
 
-        public List<SaleDetail> SaleDetails { get; set; }
+        public virtual IList<SaleDetail> SaleDetails { get; set; }
     }
 }
