@@ -48,14 +48,14 @@ namespace API.Tests.Application.Basic
         }
 
         [Theory]
-        [InlineAutoMoqData(6, 6, 15)]
+        [InlineAutoMoqData(6, 6, 12)]
         [InlineAutoMoqData(5, 5, 10)]
         public void AddTwoNumberWithInlineAutoMokTest(int input1, int input2, int total,
             [Frozen] Mock<IMath> mockMath,
             Fibonacci sut)
         {
 
-            mockMath.Setup(m => m.Add(It.IsAny<int>(), It.IsAny<int>())).Returns(total);
+            mockMath.Setup(m => m.Add(It.IsAny<int>(), It.IsAny<int>())).Returns(input1 + input2);
             var result = sut.GetNthTerm(4);
 
             Assert.Equal(result, total);
