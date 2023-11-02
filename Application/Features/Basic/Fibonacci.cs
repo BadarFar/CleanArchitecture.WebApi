@@ -24,6 +24,7 @@ namespace Application.Features.Basic
                 nMinusTwoTerm = nMinusOneTerm;
                 nMinusOneTerm = newTerm;
             }
+
             return newTerm;
         }
     }
