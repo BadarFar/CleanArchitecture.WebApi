@@ -13,6 +13,8 @@ using Application.Features.SaleStock.Queries;
 using AutoMapper;
 using Domain.Entities;
 using Application.Features.Products.Queries.GetAllProducts;
+using Application.Exceptions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace API.Tests.Application.Features.SaleStock.Queries
 {
@@ -54,6 +56,36 @@ namespace API.Tests.Application.Features.SaleStock.Queries
             Assert.Equal(productsViewModel.FirstOrDefault().Name, result.FirstOrDefault().Name);
             Assert.NotEqual(0, result.FirstOrDefault().RemanigStock);
             Assert.NotEqual(0, result.FirstOrDefault().MonthlySale);
+        }
+
+
+        [Theory, AutoMoqData]
+        public async Task Sut_NullRefrenceException(
+        [Frozen] Mock<IProductRepositoryAsync> productRepository,
+        [Frozen] Mock<ISaleDetailRepositoryAsync> saleDetailRepository,
+        [Frozen] Mock<IMapper> mapper,
+        GetAllProductsSaleAndStockHandler sut)
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
+            var saleAndStockQuery = fixture.Create<GetAllProductsSaleAndStockQuery>();
+            var products = fixture.CreateMany<Product>().ToList();
+            var productsViewModel = fixture.CreateMany<GetAllProductsViewModel>().ToList();
+            var saleDetails = fixture.CreateMany<SaleDetail>().ToList();
+
+            //mock db calls
+            productRepository.Setup(p => p.GetAllAsync()).ReturnsAsync(products);
+            mapper.SetupSequence(mapper => mapper.Map<GetAllProductsViewModel>(It.IsAny<Product>()))
+                .Returns(productsViewModel[0])
+                .Returns(productsViewModel[1])
+                .Returns(productsViewModel[2]);
+
+            saleDetailRepository.Setup(s => s.GetSalesByProductAsync(It.IsAny<int>()))
+                .ThrowsAsync(new NullReferenceException("Sale Not Found!"));
+
+            Assert.ThrowsAsync<NullReferenceException>(async () => await sut.Handle(saleAndStockQuery, new CancellationToken()));
         }
     }
 }

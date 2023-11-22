@@ -59,13 +59,20 @@ namespace Application.Features.SaleStock.Queries
 
         private async Task<decimal> CalculateTotalMonthlySaleAsync(Product product)
         {
-            // Logic to calculate total monthly sale for a product
-            var sales = await _saleDetailRepository.GetSalesByProductAsync(product.Id);
+            try
+            {
+                // Logic to calculate total monthly sale for a product
+                var sales = await _saleDetailRepository.GetSalesByProductAsync(product.Id);
 
-            // Assuming you have a Date property in SaleMaster to filter by month
-            var totalMonthlySale = sales.Sum(sale => sale.Qty * sale.Rate);
+                // Assuming you have a Date property in SaleMaster to filter by month
+                var totalMonthlySale = sales.Sum(sale => sale.Qty * sale.Rate);
 
-            return totalMonthlySale;
+                return totalMonthlySale;
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new NullReferenceException(ex.Message, ex);
+            }
         }
 
         private async Task<decimal> CalculateRemainingStockAsync(Product product)
