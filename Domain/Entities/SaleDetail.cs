@@ -9,9 +9,11 @@ namespace Domain.Entities
         [ForeignKey("Product")]
         public int ProductId { get; set; }
         public Product Product { get; set; }
+
         [ForeignKey("SaleMaster")]
         public int SaleMasterId { get; set; }
         public SaleMaster SaleMaster { get; set; }
+
         public string ProductName { get; set; }
         public decimal Qty { get; set; }
         public decimal Rate { get; set; }
