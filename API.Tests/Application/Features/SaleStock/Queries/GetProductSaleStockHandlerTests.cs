@@ -86,6 +86,7 @@ namespace API.Tests.Application.Features.SaleStock.Queries
                 .ThrowsAsync(new NullReferenceException("Sale Not Found!"));
 
             Assert.ThrowsAsync<NullReferenceException>(async () => await sut.Handle(saleAndStockQuery, new CancellationToken()));
+            saleDetailRepository.Verify(x => x.GetSalesByProductAsync(It.IsAny<int>()), Times.Once);
         }
     }
 }
