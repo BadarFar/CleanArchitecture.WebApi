@@ -69,9 +69,9 @@ namespace Application.Features.SaleStock.Queries
 
                 return totalMonthlySale;
             }
-            catch (NullReferenceException ex)
+            catch (ArgumentNullException ex)
             {
-                throw new NullReferenceException(ex.Message, ex);
+                throw new ArgumentNullException(ex.Message, ex);
             }
         }
 

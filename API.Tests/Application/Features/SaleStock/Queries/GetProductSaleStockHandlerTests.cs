@@ -60,7 +60,7 @@ namespace API.Tests.Application.Features.SaleStock.Queries
 
 
         [Theory, AutoMoqData]
-        public async Task Sut_NullRefrenceException(
+        public async Task Sut_ArgumentNullException(
         [Frozen] Mock<IProductRepositoryAsync> productRepository,
         [Frozen] Mock<ISaleDetailRepositoryAsync> saleDetailRepository,
         [Frozen] Mock<IMapper> mapper,
@@ -83,9 +83,9 @@ namespace API.Tests.Application.Features.SaleStock.Queries
                 .Returns(productsViewModel[2]);
 
             saleDetailRepository.Setup(s => s.GetSalesByProductAsync(It.IsAny<int>()))
-                .ThrowsAsync(new NullReferenceException("Sale Not Found!"));
+                .ThrowsAsync(new ArgumentNullException("Sale Not Found!"));
 
-            Assert.ThrowsAsync<NullReferenceException>(async () => await sut.Handle(saleAndStockQuery, new CancellationToken()));
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.Handle(saleAndStockQuery, new CancellationToken()));
             saleDetailRepository.Verify(x => x.GetSalesByProductAsync(It.IsAny<int>()), Times.Once);
         }
     }
