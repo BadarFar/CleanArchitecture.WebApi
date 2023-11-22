@@ -4,7 +4,9 @@ using Application;
 using Application.Interfaces;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Contexts;
 using Infrastructure.Shared;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,4 +47,23 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 app.MapControllers();
+
+
+
+// ef core apply migrations
+using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+{
+    var context= serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+
+    try
+    {
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+    }
+}
+
+
 app.Run();

@@ -12,21 +12,28 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : BaseApiController
+    public class ProductController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public ProductController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         // GET: api/<controller>
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetAllProductsParameter filter)
         {
 
-            return Ok(await Mediator.Send(new GetAllProductsQuery() { PageSize = filter.PageSize, PageNumber = filter.PageNumber }));
+            return Ok(await _mediator.Send(new GetAllProductsQuery() { PageSize = filter.PageSize, PageNumber = filter.PageNumber }));
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok(await Mediator.Send(new GetProductByIdQuery { Id = id }));
+            return Ok(await _mediator.Send(new GetProductByIdQuery { Id = id }));
         }
 
         // POST api/<controller>
@@ -34,7 +41,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> Post(CreateProductCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         // PUT api/<controller>/5
@@ -46,7 +53,7 @@ namespace API.Controllers
             {
                 return BadRequest();
             }
-            return Ok(await Mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
 
         // DELETE api/<controller>/5
@@ -54,7 +61,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await Mediator.Send(new DeleteProductByIdCommand { Id = id }));
+            return Ok(await _mediator.Send(new DeleteProductByIdCommand { Id = id }));
         }
     }
 }
