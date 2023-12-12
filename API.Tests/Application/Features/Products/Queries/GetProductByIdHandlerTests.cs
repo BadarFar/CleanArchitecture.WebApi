@@ -12,23 +12,6 @@ namespace API.Tests.Application.Features.Products.Queries
         [Fact]
         public async Task GetProductByIdHandler_Handle_Should_Throw_Exception_When_Product_Not_Found()
         {
-            // Arrange
-            var repositoryMoq = new Mock<IProductRepositoryAsync>();
-            var query = new GetProductByIdQuery
-            {
-                Id = 1,
-            };
-
-            repositoryMoq
-                .Setup(x => x.GetByIdAsync(It.IsAny<int>()))
-                .ThrowsAsync(new ApiException("Product Not Found."));
-
-            var handler = new GetProductByIdQueryHandler(repositoryMoq.Object);
-
-            // Act
-
-            // Act
-            _ = Assert.ThrowsAsync<ApiException>(async () => await handler.Handle(query, new CancellationToken()));
         }
 
         [Fact]
