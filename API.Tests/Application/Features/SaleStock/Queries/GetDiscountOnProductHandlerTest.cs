@@ -19,9 +19,9 @@ namespace API.Tests.Application.Features.SaleStock.Queries
     public class GetDiscountOnProductHandlerTest
     {
         [Theory]
-        [InlineAutoMoqData(1, 1500, 2, 0.05)]
-        [InlineAutoMoqData(2, 1000, 1, 0.02)]
-        [InlineAutoMoqData(3, 10, 10, 0.1)]
+        [InlineAutoMoqData(0, 1500, 2, 0.05)]
+        [InlineAutoMoqData(1, 1001, 1, 0.02)]
+        [InlineAutoMoqData(2, 100, 10, 0.12)]
         public async Task Sut_GetDiscountOnProductHandler(int i, int productPrice, int qty, decimal per,
         GetDiscountOnProductHandler sut)
         {
