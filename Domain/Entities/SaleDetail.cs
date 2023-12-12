@@ -17,6 +17,8 @@ namespace Domain.Entities
         public string ProductName { get; set; }
         public decimal Qty { get; set; }
         public decimal Rate { get; set; }
+
+        public decimal Discount { get; set; }
         public decimal? Total { get; set; }
     }
 }
