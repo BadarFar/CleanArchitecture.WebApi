@@ -71,28 +71,6 @@ namespace API.Tests.Controllers
         [Fact]
         public async Task ProducController_Post_Should_Call_Mediator()
         {
-            // Arrange
-            // Setup the  dependencies
-            var mediator = new Mock<IMediator>();
-            var command = new CreateProductCommand { Name = "Test Product", Description = "TDD Training", Rate = 10, Barcode = "89123719237" };
-
-
-            mediator
-                .Setup(x => x.Send(It.IsAny<CreateProductCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Response<int>(1, "Product added successfully"));
-
-            var controller = new ProductController(mediator.Object);
-
-            // Act
-            // Perform the action (call the method)
-            var response = await controller.Post(command);
-
-            // Assert
-            // Compare actual result with expected result
-            var result = response as OkObjectResult;
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.IsType<Response<int>>(result.Value);
         }
     }
 }

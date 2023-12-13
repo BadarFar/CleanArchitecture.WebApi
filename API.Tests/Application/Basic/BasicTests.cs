@@ -11,7 +11,7 @@ namespace API.Tests.Application.Basic
 
         }
 
-        [Theory, AutoMoqData]
+        [Fact]
         public void AddTwoNumberWithParamTest()
         {
 
